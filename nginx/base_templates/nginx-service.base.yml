@@ -8,6 +8,6 @@ spec:
   selector:
     app: nginx
     ports:
-    - protocal: TCP
+    - protocol: TCP
       port: 80
       targetPort: 8080
