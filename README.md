@@ -2,6 +2,16 @@
 
 Repo I'm using to learn and experiment with the basics of Kubernetes in a local development environment.
 
+## Service
+
+![running minikube service](./docs/minikube_service_terminal.png)
+![service result](./docs/minikube_service_browser.png)
+
+## Ingress
+
+![running minikube tunnel](./docs/minikube_tunnel_terminal.png)
+![ingress result](./docs/minikube_tunnel_browser.png)
+
 ## Namespaces
 
 These provide a way to isolate groups of resources within a single cluster.
