@@ -1,5 +1,7 @@
 # learning-k8s
 
+Repo I'm using to learn and experiment with the basics of Kubernetes in a local development environment.
+
 ## Namespaces
 
 These provide a way to isolate groups of resources within a single cluster.
