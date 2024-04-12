@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mongo-ingress
+  annotations:
+    spec.ingressClassName: "nginx"
+    nginx.ingress.kubernetes.io/add-base-url: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      # - pathType: Prefix
+      #   path: /
+      #   backend:
+      #     service:
+      #       name: mongo-express-service
+      #       port: 
+      #         number: 8081
+      - pathType: ImplementationSpecific # in order to use wildcard in path
+        path: /(.*)
+        backend:
+          service:
+            name: mongo-express-service
+            port: 
+              number: 8081
