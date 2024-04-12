@@ -4,10 +4,20 @@ Repo I'm using to learn and experiment with the basics of Kubernetes in a local 
 
 ## Service
 
+Expose the service to the host machine with:
+```sh
+minikube service mongo-express-service
+```
+
 ![running minikube service](./docs/minikube_service_terminal.png)
 ![service result](./docs/minikube_service_browser.png)
 
 ## Ingress
+
+Start a tunnel and use the correponding `host` in `Ingress` to access service:
+```sh
+minikube tunnel
+```
 
 ![running minikube tunnel](./docs/minikube_tunnel_terminal.png)
 ![ingress result](./docs/minikube_tunnel_browser.png)
