@@ -52,9 +52,9 @@ data:
 #### Defining namespace for a resource
 
 ##### Through CLI command
-```
+```sh
 kubectl apply -f example-deployment.yml --namespace=example-namespace
-```
+``` 
 
 ##### Through configuration file metadata
 ```yml
