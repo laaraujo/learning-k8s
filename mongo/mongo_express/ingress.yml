@@ -19,9 +19,9 @@ spec:
       #       port: 
       #         number: 8081
       - pathType: ImplementationSpecific # in order to use wildcard in path
-        path: /(.*)
+        path: /(.*) # Originally just "/" but modified to be able to get static files
         backend:
           service:
             name: mongo-express-service
             port: 
-              number: 8081
+              number: 8084

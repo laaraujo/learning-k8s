@@ -36,25 +36,8 @@ spec:
               configMapKeyRef:
                 name: mongo-configmap
                 key: database_url
-          - name: ME_CONFIG_MONDODB_URL
-            valueFrom:
-              configMapKeyRef:
-                name: mongo-configmap
-                key: database_url
----
-# External service (so we can hit from host machine)
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongo-express-service
-spec:
-  selector:
-    app: mongo-express
-  type: LoadBalancer
-  ports:
-  - protocol: TCP
-    port: 8081
-    targetPort: 8081
-    nodePort: 30001 # 30000-32767 range
-
-          
+          # - name: ME_CONFIG_MONDODB_URL
+          #   valueFrom:
+          #     configMapKeyRef:
+          #       name: mongo-configmap
+          #       key: database_url          
