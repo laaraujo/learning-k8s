@@ -35,9 +35,4 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: mongo-configmap
-                key: database_url
-          # - name: ME_CONFIG_MONDODB_URL
-          #   valueFrom:
-          #     configMapKeyRef:
-          #       name: mongo-configmap
-          #       key: database_url          
+                key: database_url   
