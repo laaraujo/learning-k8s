@@ -14,6 +14,7 @@ For the purpose of simplicity this repo is using [mongo](https://hub.docker.com/
 - [ConfigMap](#configmap)
 - [Secrets](#secret)
 - [Namespaces](#namespaces)
+- [Sources](#sources)
 
 ## Dependencies
 * [Docker](https://www.docker.com/)
@@ -262,3 +263,8 @@ There are tools like [`kubens`](https://github.com/ahmetb/kubectx) to have a mor
 * You usually can't share resources between namespaces. (i.e. each namespace will have to have their own `ConfigMap` to connect to a DB **even if** the config is the same)
 
 * Some components are cluster-specific and can't be bound to a namespace (i.e. `Volumes` and `Nodes`)
+
+## Sources
+
+* [Kubernetes Official Docs](https://kubernetes.io/docs/home/)
+* [Kubernetes Tutorial for Beginners](https://www.youtube.com/watch?v=X48VuDVv0do) - by TechWorld with Nana
