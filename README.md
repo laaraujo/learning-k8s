@@ -19,7 +19,34 @@ For the purpose of simplicity this repo is using [mongo](https://hub.docker.com/
 ## Kubernetes
 
 * Open source container orchestration tool
-* Helps manage containerized applications in different environments.
+* Helps manage containerized applications in different environments
+
+### How do we interact with a Kubernetes cluster ?
+
+Master Nodes! Master nodes control the cluster state and the worker nodes.
+There are 4 processes that run on every master node:
+
+* [API Server](#api-server)
+* [Scheduler](#scheduler)
+* [Controller Manager](#controller-manager)
+* [etcd](#etcd)
+
+#### API Server
+When we want to deploy a new application in a Kubernetes cluster we interact with the API server through some client (Kubernetes dashboard, CLI tool like Kubelet or the Kubernetes API).
+It servers as a cluster gateway that gets the initial requests of any updates into the cluster and the queries to the cluster.
+
+#### Scheduler
+After the API server validates a request it handles it to the Scheduler.
+It checks for current and desired resources and decides where to create/update/delete resources.
+
+#### Controller Manager
+Daemon process in charge of detecting state changes within the cluster (i.e. crashing `Pods`).
+When a resource "dies" it will make a request to the Scheduler to re-schedule that resource.
+
+#### etcd
+Key-value store of the cluster state.
+Any change in the cluster is stored here (except application data).
+
 
 ## Pod
 This are the smallest deployable unit in K8s and an abstraction layer over Containers.<br>
