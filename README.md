@@ -266,5 +266,5 @@ There are tools like [`kubens`](https://github.com/ahmetb/kubectx) to have a mor
 
 ## Sources
 
-* [Kubernetes Official Docs](https://kubernetes.io/docs/home/)
+* [Kubernetes official docs](https://kubernetes.io/docs/home/)
 * [Kubernetes Tutorial for Beginners](https://www.youtube.com/watch?v=X48VuDVv0do) - by TechWorld with Nana
