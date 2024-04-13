@@ -1,6 +1,7 @@
 # learning-k8s
 
 Repo I'm using to learn and experiment with the basics of Kubernetes in a local development environment.
+I'll be using [mongo](https://hub.docker.com/_/mongo) and [mongo-express](https://hub.docker.com/_/mongo-express) docker images.
 
 ## Service
 
