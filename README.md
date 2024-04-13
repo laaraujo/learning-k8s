@@ -1,11 +1,73 @@
 # learning-k8s
 
 Repo I'm using to learn and experiment with the basics of Kubernetes in a local development environment.
-I'll be using [mongo](https://hub.docker.com/_/mongo) and [mongo-express](https://hub.docker.com/_/mongo-express) docker images.
+For the purpose of simplicity this repo is using [mongo](https://hub.docker.com/_/mongo) and [mongo-express](https://hub.docker.com/_/mongo-express) docker images.
+
+
+## Table of contents
+- [Dependencies](#dependencies)
+- [Pods](#pods)
+- [Service](#service)
+- [Ingress](#ingress)
+- [Namespaces](#namespaces)
+
+## Dependencies
+* [Docker](https://www.docker.com/)
+* [Minikube](https://minikube.sigs.k8s.io/)
+* [Kubernetes and Kubectl](https://kubernetes.io/)
+
+## Kubernetes
+
+* Open source container orchestration tool
+* Helps manage containerized applications in different environments.
+
+## Pod
+This are the smallest deployable unit in K8s and an abstraction layer over Containers.<br>
+**Generally we do NOT create these directly, instead they are created by resources like `Deployments` or `Jobs`.**
+
+### Notes
+
+* Ephemeral (they can "die" easily)
+* Usually 1 application per Pod
+* Each pod gets their IP address (internal)
+
+### Example
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongodb
+spec:
+  containers:
+  - name: mongodb
+    image: mongo:6.0
+    ports:
+    - containerPort: 80
+```
+
+## Deployments
+ TODO
 
 ## Service
+Basically a static/permanent IP address that can be attached to pods in the corresponding network.
+Its lifecycle is not connected to the referenced Pods.<br>
+The resulting url usually looks like this: `protocol://node-ip-address:port`.
 
-Expose the service to the host machine with:
+### Example
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector:
+    app: mongodb # spec.selector.matchLabels.app from Deployment template
+  ports:
+  - port: 27017
+    targetPort: 27017
+```
+
+### Expose the service to the host machine with:
 ```sh
 minikube service mongo-express-service
 ```
@@ -14,14 +76,45 @@ minikube service mongo-express-service
 ![service result](./docs/minikube_service_browser.png)
 
 ## Ingress
+Manages external access to services in a cluster. It exposes HTTP/HTTPS routes from outside the cluster to services within it.
 
-Start a tunnel and use the correponding `host` in `Ingress` to access service:
+![ingress diagram](./docs/k8_ingress.png)
+
+### Start a tunnel and use the correponding `host` in `Ingress` to access service:
 ```sh
 minikube tunnel
 ```
 
 ![running minikube tunnel](./docs/minikube_tunnel_terminal.png)
 ![ingress result](./docs/minikube_tunnel_browser.png)
+
+## ConfigMap
+Maps external configuration of your application
+
+### Example
+```yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-configmap
+data:
+  database_url: mongodb-service
+```
+
+## Secret
+Pretty much the same as ConfigMap but it is used to store secret data AND it is stored in base64 encoded format.
+
+```yml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-secret
+type: Opaque
+data:
+  mongo-root-username: dXNlcm5hbWU= # "username" base64 encoded
+  mongo-root-password: cGFzc3dvcmQ= # "password" base64 encoded
+
+```
 
 ## Namespaces
 
