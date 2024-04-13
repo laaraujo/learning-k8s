@@ -46,7 +46,46 @@ spec:
 ```
 
 ## Deployments
- TODO
+Declarative definition for `Pods` and `ReplicaSets`.
+We can specify the desired:
+* container image with the `.spec.template.spec.containers[n].image` attribute.
+* number `Pods` with the `.spec.replicas` attribute
+* environment variables with `.spec.template.spec.containers[n].env`
+
+### Example
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+spec:
+  replicas: 3 # default to 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo # https://hub.docker.com/_/mongo
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef: 
+              name: mongodb-secret # secret name
+              key: mongo-root-username # secret data key
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret # secret name
+              key: mongo-root-password # secret data key
+
+```
 
 ## Service
 Basically a static/permanent IP address that can be attached to pods in the corresponding network.
