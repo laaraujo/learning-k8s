@@ -6,9 +6,13 @@ For the purpose of simplicity this repo is using [mongo](https://hub.docker.com/
 
 ## Table of contents
 - [Dependencies](#dependencies)
+- [K8s](#kubernetes)
 - [Pods](#pods)
-- [Service](#service)
+- [Deployments](#deployments)
+- [Services](#services)
 - [Ingress](#ingress)
+- [ConfigMap](#configmap)
+- [Secrets](#secret)
 - [Namespaces](#namespaces)
 
 ## Dependencies
@@ -114,7 +118,7 @@ spec:
 
 ```
 
-## Service
+## Services
 Basically a static/permanent IP address that can be attached to pods in the corresponding network.
 Its lifecycle is not connected to the referenced Pods.<br>
 The resulting url usually looks like this: `protocol://node-ip-address:port`.
