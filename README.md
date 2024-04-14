@@ -14,6 +14,8 @@ For the purpose of simplicity this repo is using [mongo](https://hub.docker.com/
 - [ConfigMap](#configmap)
 - [Secrets](#secret)
 - [Namespaces](#namespaces)
+- [Persistent Volumes](#persistent-volumes)
+- [Persistent Volume Claims)](#persistent-volume-claims)
 - [Sources](#sources)
 
 ## Dependencies
@@ -263,6 +265,97 @@ There are tools like [`kubens`](https://github.com/ahmetb/kubectx) to have a mor
 * You usually can't share resources between namespaces. (i.e. each namespace will have to have their own `ConfigMap` to connect to a DB **even if** the config is the same)
 
 * Some components are cluster-specific and can't be bound to a namespace (i.e. `Volumes` and `Nodes`)
+
+## Persistent Volumes
+Cluster resource that is used to store data. It assumes that you take care of your actual physical storage.
+
+### Example
+```yml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-persistent-volume
+spec:
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: /mnt/mongodb
+```
+
+### Mounting a local folder with `minikube`
+Command: `minikube mount <host_dir>:<cluster_dir>`
+
+```logs
+📁  Mounting host path ./mongo_volumes into VM as /mnt/mongodb ...
+    ▪ Mount type:   9p
+    ▪ User ID:      docker
+    ▪ Group ID:     docker
+    ▪ Version:      9p2000.L
+    ▪ Message Size: 262144
+    ▪ Options:      map[]
+    ▪ Bind Address: 172.23.105.90:37415
+🚀  Userspace file server: ufs starting
+✅  Successfully mounted ./mongo_volumes to /mnt/mongodb
+
+📌  NOTE: This process must stay alive for the mount to be accessible ...
+```
+
+
+## Persistent Volume Claims
+These allow a Pod to "claim" a persistent volume (and takes care of "picking" the "correct" persistent volume).
+
+### Example
+```yml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-persistent-volume-claim
+spec:
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: mongo-persistent-volume
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+```
+
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      securityContext:
+        runAsUser: 999 # mongodb user
+        fsGroup: 999 # mongodb user
+      containers:
+      - name: mongodb
+        ...
+        volumeMounts:
+        - name: random-volume-mount-name
+          mountPath: /data/db # as specified in mongo official docs and docker image info
+        securityContext:
+          privileged: true
+      volumes:
+      - name: random-volume-mount-name
+        persistentVolumeClaim:
+          claimName: mongodb-persistent-volume-claim
+```
 
 ## Sources
 
