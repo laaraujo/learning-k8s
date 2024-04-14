@@ -11,6 +11,9 @@ spec:
       labels:
         app: mongodb
     spec:
+      securityContext:
+        runAsUser: 999 # mongodb user
+        fsGroup: 999 # mongodb user
       containers:
       - name: mongodb
         image: mongo # https://hub.docker.com/_/mongo
@@ -27,3 +30,12 @@ spec:
             secretKeyRef:
               name: mongodb-secret # secret name
               key: mongo-root-password # secret data key
+        volumeMounts:
+        - name: random-volume-mount-name
+          mountPath: /data/db # as specified in mongo official docs and docker image info
+        securityContext:
+          privileged: true
+      volumes:
+      - name: random-volume-mount-name
+        persistentVolumeClaim:
+          claimName: mongodb-persistent-volume-claim
